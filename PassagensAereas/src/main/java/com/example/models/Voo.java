@@ -10,13 +10,15 @@ public abstract class Voo {
     private String destino;
     private LocalDate dataPartida;
     private int capacidade;
+    private double precoBase;
 
-    public Voo(String origem, String destino, LocalDate dataPartida, int capacidade) {
+    public Voo(String origem, String destino, LocalDate dataPartida, int capacidade, double precoBase) {
         this.id = contadorId++;
         this.origem = origem;
         this.destino = destino;
         this.dataPartida = dataPartida;
         this.capacidade = capacidade;
+        this.precoBase = precoBase;
     }
 
     public int getId() {
@@ -61,6 +63,11 @@ public abstract class Voo {
 
     public abstract double calcularTaxa();
 
+    public double calcularPrecoFinal() {
+        return precoBase + calcularTaxa();
+    }
+
+    
 
     
 }

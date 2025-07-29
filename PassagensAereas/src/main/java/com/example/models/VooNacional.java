@@ -6,8 +6,8 @@ public class VooNacional extends Voo {
     private String estadoOrigem;
     private String estadoDestino;
 
-    public VooNacional(String origem, String destino, LocalDate dataPartida, int capacidade, String estadoOrigem, String estadoDestino) {
-        super(origem, destino, dataPartida, capacidade);
+    public VooNacional(String origem, String destino, LocalDate dataPartida, int capacidade, String estadoOrigem, String estadoDestino, double precoBase) {
+        super(origem, destino, dataPartida, capacidade, precoBase);
         this.estadoOrigem = estadoOrigem;
         this.estadoDestino = estadoDestino;
     }

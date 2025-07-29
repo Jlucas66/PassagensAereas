@@ -4,12 +4,12 @@ import java.util.List;
 import java.util.Optional;
 
 import com.example.models.Voo;
-import com.example.repositories.IVooRepository;
+import com.example.repositories.IRepository;
 import com.example.repositories.VooRepository;
 
 public class VooController {
 
-    private IVooRepository vooRepository;
+    private IRepository<Voo> vooRepository;
 
     public VooController() {
         this.vooRepository = new VooRepository(); 
@@ -20,7 +20,8 @@ public class VooController {
             throw new IllegalArgumentException("Voo não pode ser nulo.");
         }
 
-        if (voo.getOrigem().isBlank() || voo.getDestino().isBlank()) {
+        if (voo.getOrigem() == null || voo.getOrigem().isBlank() ||
+            voo.getDestino() == null || voo.getDestino().isBlank()) {
             throw new IllegalArgumentException("Origem e destino são obrigatórios.");
         }
 
@@ -32,18 +33,24 @@ public class VooController {
     }
 
     public Optional<Voo> buscarVooPorId(int id) {
-        return vooRepository.buscarPorId(id);
-    }
+    return Optional.ofNullable(vooRepository.buscarPorId(id));
+}
+
 
     public boolean removerVoo(int id) {
-        return vooRepository.remover(id);
+        Voo voo = vooRepository.buscarPorId(id);
+        if (voo != null) {
+            vooRepository.remover(voo);
+            return true;
+        }
+        return false;
     }
 
     public boolean vooExiste(int id) {
-        return vooRepository.existe(id);
+        return vooRepository.buscarPorId(id) != null;
     }
 
     public int contarVoos() {
-        return vooRepository.contar();
+        return vooRepository.listarTodos().size();
     }
 }
