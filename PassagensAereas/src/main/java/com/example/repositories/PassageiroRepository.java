@@ -1,20 +1,28 @@
 package com.example.repositories;
 
+import java.io.*;
 import java.util.ArrayList;
 
 import com.example.models.Passageiro;
 
 public class PassageiroRepository implements IRepository<Passageiro> {
-    private ArrayList<Passageiro> passageiros = new ArrayList<>();
+    private ArrayList<Passageiro> passageiros;
+    private static final String ARQUIVO = "passageiros.dat";
+
+    public PassageiroRepository() {
+        passageiros = carregarArquivo();
+    }
 
     @Override
     public void adicionar(Passageiro passageiro) {
         passageiros.add(passageiro);
+        salvarArquivo();
     }
 
     @Override
     public void remover(Passageiro passageiro) {
         passageiros.remove(passageiro);
+        salvarArquivo();
     }
 
     @Override
@@ -37,9 +45,30 @@ public class PassageiroRepository implements IRepository<Passageiro> {
         for (int i = 0; i < passageiros.size(); i++) {
             if (passageiros.get(i).getId() == novoPassageiro.getId()) {
                 passageiros.set(i, novoPassageiro);
+                salvarArquivo();
                 return true;
             }
         }
         return false;
+    }
+
+    private void salvarArquivo() {
+        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(ARQUIVO))) {
+            out.writeObject(passageiros);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private ArrayList<Passageiro> carregarArquivo() {
+        File file = new File(ARQUIVO);
+        if (!file.exists()) return new ArrayList<>();
+        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(file))) {
+            return (ArrayList<Passageiro>) in.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+            return new ArrayList<>();
+        }
     }
 }

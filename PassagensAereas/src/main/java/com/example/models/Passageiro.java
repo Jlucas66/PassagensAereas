@@ -1,6 +1,10 @@
 package com.example.models;
 
-public class Passageiro {
+import java.io.Serializable;
+
+public class Passageiro implements Serializable {
+    private static final long seriaVersionUID = 1L;
+
     private static int contador = 1;
     private int id;
     private String nome;

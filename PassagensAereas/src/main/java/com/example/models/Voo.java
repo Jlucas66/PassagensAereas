@@ -1,8 +1,11 @@
 package com.example.models;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public abstract class Voo {
+public abstract class Voo implements Serializable {
+    private static final long seriaVersionUID = 1L;
+
     private static int contadorId = 1;
 
     private int id;
@@ -67,7 +70,4 @@ public abstract class Voo {
         return precoBase + calcularTaxa();
     }
 
-    
-
-    
 }

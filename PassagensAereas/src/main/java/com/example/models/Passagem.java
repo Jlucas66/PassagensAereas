@@ -1,6 +1,8 @@
 package com.example.models;
 
-public class Passagem implements Reservavel {
+import java.io.Serializable;
+
+public class Passagem implements Reservavel, Serializable {
     private static int contador = 1;
     private int id;
     private Passageiro passageiro;
