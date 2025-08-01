@@ -13,4 +13,7 @@ module com.example.passagensaereas {
 
     opens com.example.passagensaereas to javafx.fxml;
     exports com.example.passagensaereas;
+
+    exports com.example.gui;
+    opens com.example.gui to javafx.fxml;
 }
