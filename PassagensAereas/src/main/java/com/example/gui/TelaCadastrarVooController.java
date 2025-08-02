@@ -1,21 +1,26 @@
 package com.example.gui;
 
+import java.io.IOException;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
+import com.example.controllers.Fachada; // ou VooInternacional, se quiser incluir também
 import com.example.models.Voo;
+import com.example.models.VooNacional;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 
 public class TelaCadastrarVooController {
 
-    // Campos da interface
     @FXML private TextField txtOrigem;
     @FXML private TextField txtDestino;
     @FXML private DatePicker dpDataPartida;
@@ -24,12 +29,9 @@ public class TelaCadastrarVooController {
     @FXML private Button btnFinalizarCadastro;
     @FXML private Button btnVoltar;
     @FXML private Button btnSair;
-
-    // Mensagem opcional (caso queira adicionar no FXML mais tarde)
     @FXML private Label lblMensagem;
 
-    // Lista de voos cadastrados (pública para outras telas acessarem, ou substitua por DAO)
-    public static List<Voo> listaVoos = new ArrayList<>();
+    private final Fachada fachada = new Fachada();
 
     @FXML
     private void finalizarCadastroVoo() {
@@ -45,18 +47,33 @@ public class TelaCadastrarVooController {
                 return;
             }
 
+            Voo voo = new VooNacional(origem, destino, data, capacidade, origem, destino, precoBase);
+            fachada.cadastrarVoo(voo);
+
             mostrarMensagem("Voo cadastrado com sucesso!", Color.GREEN);
             limparCampos();
 
         } catch (NumberFormatException e) {
             mostrarMensagem("Capacidade ou preço inválido.", Color.RED);
+        } catch (IllegalArgumentException e) {
+            mostrarMensagem(e.getMessage(), Color.RED);
         }
     }
 
     @FXML
     private void voltar() {
-        System.out.println("Voltando à tela anterior...");
-        // Aqui você pode usar NavigationHelper ou trocar de cena se desejar
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/passagensaereas/TelaAdmin.fxml"));
+            Parent root = loader.load();
+
+            Stage stage = (Stage) btnVoltar.getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Tela do Administrador");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            exibirAlerta("Erro", "Não foi possível voltar para a tela do administrador.");
+        }
     }
 
     @FXML
@@ -77,8 +94,15 @@ public class TelaCadastrarVooController {
             lblMensagem.setText(msg);
             lblMensagem.setTextFill(cor);
         } else {
-            System.out.println(msg); // Fallback se não houver label visível
+            System.out.println(msg);
         }
     }
-}
 
+    private void exibirAlerta(String titulo, String mensagem) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(titulo);
+        alert.setHeaderText(null);
+        alert.setContentText(mensagem);
+        alert.showAndWait();
+    }
+}
