@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Polygon?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="734.0" prefWidth="1187.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fx:controller=&quot;com.example.gui.TelaAdminController&quot;">
+   <children>
+      <BorderPane layoutY="2.0" prefHeight="734.0" prefWidth="388.0" style="-fx-background-color: #2196F3;">
+         <right>
+            <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #2196F3;" BorderPane.alignment="CENTER">
+               <children>
+                  <Polygon fill="#2196f3" layoutX="136.0" layoutY="113.0" points="159.0, -67.0, 64.0, -31.0, 64.0, -113.0" smooth="false" stroke="TRANSPARENT" strokeType="INSIDE" />
+                  <Text layoutX="76.0" layoutY="122.0" rotate="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="✈">
+                     <font>
+                        <Font size="48.0" />
+                     </font>
+                  </Text>
+                  <Text layoutX="-126.0" layoutY="142.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Aterrissar.com">
+                     <font>
+                        <Font name="Liberation Serif Bold Italic" size="36.0" />
+                     </font>
+                  </Text>
+               </children>
+            </Pane>
+         </right>
+      </BorderPane>
+      <Polygon fill="#2196f3" layoutX="323.0" layoutY="194.0" points="159.0, -67.0, 64.0, -31.0, 64.0, -113.0" smooth="false" stroke="TRANSPARENT" strokeType="INSIDE" />
+      <Polygon fill="#2196f3" layoutX="323.0" layoutY="276.0" points="159.0, -67.0, 64.0, -31.0, 64.0, -113.0" smooth="false" stroke="TRANSPARENT" strokeType="INSIDE" />
+      <Polygon fill="#2196f3" layoutX="323.0" layoutY="358.0" points="159.0, -67.0, 64.0, -31.0, 64.0, -113.0" smooth="false" stroke="TRANSPARENT" strokeType="INSIDE" />
+      <Polygon fill="#2196f3" layoutX="323.0" layoutY="439.0" points="159.0, -67.0, 64.0, -31.0, 64.0, -113.0" smooth="false" stroke="TRANSPARENT" strokeType="INSIDE" />
+      <Polygon fill="#2196f3" layoutX="323.0" layoutY="521.0" points="159.0, -67.0, 64.0, -31.0, 64.0, -113.0" smooth="false" stroke="TRANSPARENT" strokeType="INSIDE" />
+      <Polygon fill="#2196f3" layoutX="323.0" layoutY="603.0" points="159.0, -67.0, 64.0, -31.0, 64.0, -113.0" smooth="false" stroke="TRANSPARENT" strokeType="INSIDE" />
+      <Polygon fill="#2196f3" layoutX="323.0" layoutY="685.0" points="159.0, -67.0, 64.0, -31.0, 64.0, -113.0" smooth="false" stroke="TRANSPARENT" strokeType="INSIDE" />
+      <Polygon fill="#2196f3" layoutX="323.0" layoutY="767.0" points="159.0, -67.0, 64.0, -31.0, 64.0, -113.0" smooth="false" stroke="TRANSPARENT" strokeType="INSIDE" />
+      <Button fx:id="btnSair" layoutX="1131.0" layoutY="14.0" mnemonicParsing="false" onAction="#sair" style="-fx-background-color: #2196F3;" text="Sair" />
+      <Button fx:id="btnVoltar" layoutX="921.0" layoutY="531.0" mnemonicParsing="false" onAction="#voltar" prefHeight="49.0" prefWidth="142.0" style="-fx-background-color: #2196F3;" text="Voltar" />
+      <Text layoutX="584.0" layoutY="209.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Histórico de Passagens:" />
+      <Button fx:id="btnCadastrarVoo" layoutX="608.0" layoutY="537.0" mnemonicParsing="false" onAction="#abrirTelaCadastrarVoo" prefHeight="49.0" prefWidth="142.0" style="-fx-background-color: #2196F3;" text="Cadastrar um Voo" />
+      <TableView fx:id="tbPassagens" layoutX="584.0" layoutY="234.0" prefHeight="185.0" prefWidth="450.0">
+        <columns>
+          <TableColumn fx:id="colPassageiro" prefWidth="75.0" style="-fx-background-color: #2196F3;" text="Passageiro" />
+            <TableColumn fx:id="colCPF" prefWidth="75.0" style="-fx-background-color: #2196F3;" text="CPF" />
+            <TableColumn fx:id="colOrigem" prefWidth="75.0" style="-fx-background-color: #2196F3;" text="Origem" />
+            <TableColumn fx:id="colDestino" prefWidth="75.0" style="-fx-background-color: #2196F3;" text="Destino" />
+            <TableColumn fx:id="colData" prefWidth="75.0" style="-fx-background-color: #2196F3;" text="Data" />
+            <TableColumn fx:id="colPreco" prefWidth="75.0" style="-fx-background-color: #2196F3;" text="Preço" />
+        </columns>
+      </TableView>
+      <TextField fx:id="txtPesquisa" layoutX="581.0" layoutY="97.0" prefHeight="25.0" prefWidth="450.0" style="-fx-background-color: transparent; -fx-border-color: #2196F3; -fx-border-width: 0 0 2 0;" />
+      <Text layoutX="584.0" layoutY="77.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Pesquise:" />
+      <Button fx:id="btnAplicarFiltro" layoutX="756.0" layoutY="466.0" mnemonicParsing="false" onAction="#aplicarFiltro" prefHeight="49.0" prefWidth="142.0" style="-fx-background-color: #2196F3;" text="Aplicar Filtro" />
+   </children>
+</AnchorPane>
