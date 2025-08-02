@@ -26,15 +26,15 @@ public class TelaLoginController {
 
     @FXML
     private void realizarLogin() {
-        String cpf = txtCPF.getText();
+        String email = txtCPF.getText();
         String senha = pxtSenha.getText();
 
-        if (cpf.isEmpty() || senha.isEmpty()) {
-            exibirAlerta("Campos obrigatórios", "Informe CPF e senha para continuar.");
+        if (email.isEmpty() || senha.isEmpty()) {
+            exibirAlerta("Campos obrigatórios", "Informe email e senha para continuar.");
             return;
         }
 
-        boolean autenticado = fachada.confirmarLoginAdministrador(cpf, senha);
+        boolean autenticado = fachada.confirmarLoginAdministrador(email, senha);
 
         if (autenticado) {
             System.out.println("Login bem-sucedido!");
@@ -46,7 +46,7 @@ public class TelaLoginController {
 
     private void abrirTelaAdministrador() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/passagensaereas/TelaAdministrador.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/passagensaereas/TelaAdmin.fxml"));
             Parent root = loader.load();
 
             Stage stage = (Stage) btnRealizarLogin.getScene().getWindow();

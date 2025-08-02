@@ -40,7 +40,7 @@
       <Polygon fill="#2196f3" layoutX="323.0" layoutY="685.0" points="159.0, -67.0, 64.0, -31.0, 64.0, -113.0" smooth="false" stroke="TRANSPARENT" strokeType="INSIDE" />
       <Polygon fill="#2196f3" layoutX="323.0" layoutY="767.0" points="159.0, -67.0, 64.0, -31.0, 64.0, -113.0" smooth="false" stroke="TRANSPARENT" strokeType="INSIDE" />
       <Button fx:id="btnSair" layoutX="1131.0" layoutY="14.0" mnemonicParsing="false" onAction="#sair" style="-fx-background-color: #2196F3;" text="Sair" />
-      <Text layoutX="663.0" layoutY="200.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CPF:" wrappingWidth="42.611328125" />
+      <Text layoutX="663.0" layoutY="200.0" strokeType="OUTSIDE" strokeWidth="0.0" text="E-mail:" wrappingWidth="42.611328125" />
       <TextField fx:id="txtCPF" layoutX="663.0" layoutY="204.0" prefHeight="27.0" prefWidth="286.0" style="-fx-background-color: transparent; -fx-border-color: #2196F3; -fx-border-width: 0 0 2 0;" />
       <PasswordField fx:id="pxtSenha" layoutX="663.0" layoutY="327.0" prefHeight="27.0" prefWidth="286.0" style="-fx-background-color: transparent; -fx-border-color: #2196F3; -fx-border-width: 0 0 2 0;" />
       <Text layoutX="663.0" layoutY="322.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Senha:" wrappingWidth="42.611328125" />

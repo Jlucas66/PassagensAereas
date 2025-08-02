@@ -79,7 +79,7 @@ public class TelaInicialController {
 
         int quantidade = Integer.parseInt(txtQuantidadeNoVoo.getText());
 
-        double precoBase = 500.0;
+        double precoBase = chkInternacional.isSelected() ? 1000.0 : 500.0;
         precoTotalCalculado = precoBase * quantidade;
 
         lblPrecoCalculado.setText("Preço: R$ " + String.format("%.2f", precoTotalCalculado));

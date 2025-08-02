@@ -111,7 +111,7 @@ public class TelaAdminController {
     @FXML
     private void abrirTelaCadastrarVoo() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/passagensaereas/TelaCadastroVoo.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/passagensaereas/TelaCadastrarVoo.fxml"));
             Parent root = loader.load();
 
             Stage stage = (Stage) tbPassagens.getScene().getWindow();

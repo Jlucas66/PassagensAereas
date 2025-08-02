@@ -40,6 +40,7 @@ public class TelaInfoPassagemController implements Initializable {
     @FXML private Button btnFinalizarReserva;
     @FXML private Button btnVoltar;
     @FXML private Button btnSair;
+    private Voo vooSelecionado;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -122,7 +123,14 @@ public class TelaInfoPassagemController implements Initializable {
     }
 
     public void setVooSelecionado(Voo voo) {
-        throw new UnsupportedOperationException("Unimplemented method 'setVooSelecionado'");
+        this.vooSelecionado = voo;
+        if (voo != null) {
+            txtOrigem.setText(voo.getOrigem());
+            txtDestino.setText(voo.getDestino());
+            dtpDataVoo.setValue(voo.getDataPartida());
+            txtQuantidadeNoVoo.setText(String.valueOf(voo.getCapacidade()));
+            cbxVoo.getSelectionModel().select(voo);
+        }
     }
 }
 

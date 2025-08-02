@@ -1,6 +1,11 @@
 package com.example.repositories;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,18 +62,21 @@ public class AdministradorRepository implements IRepository<Administrador> {
         try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(ARQUIVO))) {
             out.writeObject(administradores);
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println("Erro ao salvar administradores: " + e.getMessage());
         }
     }
-
+    
     @SuppressWarnings("unchecked")
     private ArrayList<Administrador> carregarArquivo() {
         File file = new File(ARQUIVO);
-        if (!file.exists()) return new ArrayList<>();
+        if (!file.exists()) {
+            System.out.println("Arquivo de administradores não encontrado. Criando lista vazia.");
+            return new ArrayList<>();
+        }
         try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(file))) {
             return (ArrayList<Administrador>) in.readObject();
         } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
+            System.err.println("Erro ao carregar administradores: " + e.getMessage());
             return new ArrayList<>();
         }
     }
