@@ -3,6 +3,7 @@ package com.example.models;
 import java.io.Serializable;
 
 public class Passagem implements Reservavel, Serializable {
+        private static final long seriaVersionUID = 1L;
     private static int contador = 1;
     private int id;
     private Passageiro passageiro;
