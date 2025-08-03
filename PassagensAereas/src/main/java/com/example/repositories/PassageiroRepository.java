@@ -1,6 +1,11 @@
 package com.example.repositories;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 import com.example.models.Passageiro;
@@ -70,5 +75,17 @@ public class PassageiroRepository implements IRepository<Passageiro> {
             e.printStackTrace();
             return new ArrayList<>();
         }
+    }
+
+    @Override
+    public void limparRepositorio() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'limparRepositorio'");
+    }
+
+    @Override
+    public int contarVoos() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'contarVoos'");
     }
 }

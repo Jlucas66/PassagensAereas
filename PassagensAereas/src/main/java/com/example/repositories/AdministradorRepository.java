@@ -80,4 +80,14 @@ public class AdministradorRepository implements IRepository<Administrador> {
             return new ArrayList<>();
         }
     }
+
+    @Override
+    public void limparRepositorio() {
+        throw new UnsupportedOperationException("Unimplemented method 'limparRepositorio'");
+    }
+
+    @Override
+    public int contarVoos() {
+        throw new UnsupportedOperationException("Unimplemented method 'contarVoos'");
+    }
 }

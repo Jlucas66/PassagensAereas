@@ -2,8 +2,13 @@ package com.example.controllers;
 
 import java.util.List;
 
-import com.example.models.*;
-import com.example.repositories.*;
+import com.example.models.Administrador;
+import com.example.models.Passageiro;
+import com.example.models.Passagem;
+import com.example.models.Voo;
+import com.example.repositories.AdministradorRepository;
+import com.example.repositories.PassageiroRepository;
+import com.example.repositories.PassagemRepository;
 
 public class Fachada {
 
@@ -14,7 +19,7 @@ public class Fachada {
 
     public Fachada() {
         this.passageiroController = new PassageiroController(new PassageiroRepository());
-        this.passagemController = new PassagemController(new PassagemRepository());
+        this.passagemController = new PassagemController(new PassagemRepository(), passageiroController, vooController);
         this.administradorController = new AdministradorController(new AdministradorRepository());
     }
 
@@ -78,6 +83,10 @@ public class Fachada {
 
     public boolean atualizarPassagem(Passagem passagemAtualizada) {
         return passagemController.atualizarPassagem(passagemAtualizada);
+    }
+
+    public List<Passagem> listarPassagensCompletas() {
+        return passagemController.listarPassagensCompletas();
     }
 
     // ---------------- ADMINISTRADORES ----------------

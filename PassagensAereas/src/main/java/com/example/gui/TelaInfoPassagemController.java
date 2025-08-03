@@ -3,6 +3,7 @@ package com.example.gui;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -49,26 +50,67 @@ public class TelaInfoPassagemController implements Initializable {
     }
 
     private void carregarVoos() {
+    try {
         List<Voo> voos = fachada.listarVoos();
-        ObservableList<Voo> lista = FXCollections.observableArrayList(voos);
-        cbxVoo.setItems(lista);
+        System.out.println("Número de voos carregados: " + voos.size());
+        
 
+        ObservableList<Voo> listaVoos = FXCollections.observableArrayList(voos);
 
-        cbxVoo.setCellFactory(lv -> new ListCell<>() {
+        cbxVoo.setItems(listaVoos);
+        
+        cbxVoo.setCellFactory(lv -> new ListCell<Voo>() {
             @Override
             protected void updateItem(Voo voo, boolean empty) {
                 super.updateItem(voo, empty);
-                setText(empty || voo == null ? null : voo.toString());
+                if (empty || voo == null) {
+                    setText(null);
+                    setGraphic(null);
+                } else {
+                    setText(formatarVooParaExibicao(voo));
+                }
             }
         });
-        cbxVoo.setButtonCell(new ListCell<>() {
+        
+
+        cbxVoo.setButtonCell(new ListCell<Voo>() {
             @Override
             protected void updateItem(Voo voo, boolean empty) {
                 super.updateItem(voo, empty);
-                setText(empty || voo == null ? null : voo.toString());
+                if (empty || voo == null) {
+                    setText("Selecione um voo");
+                } else {
+                    setText(formatarVooParaExibicao(voo));
+                }
             }
         });
+        
+        // Seleciona o primeiro voo se existir
+        if (!voos.isEmpty()) {
+            cbxVoo.getSelectionModel().selectFirst();
+        }
+        
+    } catch (Exception e) {
+        System.err.println("Erro ao carregar voos: " + e.getMessage());
+        exibirAlerta("Erro", "Não foi possível carregar a lista de voos.");
+        
+        // Define uma lista vazia em caso de erro
+        cbxVoo.setItems(FXCollections.observableArrayList());
+        cbxVoo.setPromptText("Nenhum voo disponível");
     }
+}
+
+/**
+ * Formata as informações do voo para exibição no ComboBox
+ */
+private String formatarVooParaExibicao(Voo voo) {
+    return String.format("%s → %s | %s | %d assentos | R$ %.2f",
+            voo.getOrigem(),
+            voo.getDestino(),
+            voo.getDataPartida().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
+            voo.getCapacidade(),
+            voo.calcularPrecoFinal());
+}
 
     @FXML
     private void finalizarReserva(ActionEvent event) {

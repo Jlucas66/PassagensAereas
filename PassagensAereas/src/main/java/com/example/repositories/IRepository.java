@@ -9,5 +9,7 @@ public interface IRepository<T> {
     List<T> listarTodos();
     T buscarPorId(int id);
     boolean atualizar(T entidade);
+    void limparRepositorio();
+    int contarVoos();
     
 }

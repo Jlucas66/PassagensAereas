@@ -1,11 +1,13 @@
 package com.example.gui;
 
 import java.io.IOException;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import com.example.controllers.Fachada;
+import com.example.models.Passageiro;
 import com.example.models.Passagem;
+import com.example.models.Voo;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -15,120 +17,161 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 public class TelaAdminController {
 
+    private static final DateTimeFormatter DATE_FORMATTER = 
+        DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    
     private final Fachada fachada = new Fachada();
 
+    // Elementos da interface
+    @FXML private ListView<String> listaPassagens;
     @FXML private TextField txtPesquisa;
     @FXML private Button btnAplicarFiltro;
-    @FXML private TableView<Passagem> tbPassagens;
-    @FXML private TableColumn<Passagem, String> colPassageiro;
-    @FXML private TableColumn<Passagem, String> colCPF;
-    @FXML private TableColumn<Passagem, String> colOrigem;
-    @FXML private TableColumn<Passagem, String> colDestino;
-    @FXML private TableColumn<Passagem, String> colData;
-    @FXML private TableColumn<Passagem, String> colPreco;
-
-    private final ObservableList<Passagem> todasPassagens = FXCollections.observableArrayList();
+    @FXML private Button btnSair;
+    @FXML private Button btnVoltar;
+    @FXML private Button btnCadastrarVoo;
 
     @FXML
-    private void initialize() {
-        colPassageiro.setCellValueFactory(cellData ->
-            new javafx.beans.property.SimpleStringProperty(
-                cellData.getValue().getPassageiro().getNome()));
-        colCPF.setCellValueFactory(cellData ->
-            new javafx.beans.property.SimpleStringProperty(
-                cellData.getValue().getPassageiro().getCpf()));
-        colOrigem.setCellValueFactory(cellData ->
-            new javafx.beans.property.SimpleStringProperty(
-                cellData.getValue().getVoo().getOrigem()));
-        colDestino.setCellValueFactory(cellData ->
-            new javafx.beans.property.SimpleStringProperty(
-                cellData.getValue().getVoo().getDestino()));
-        colData.setCellValueFactory(cellData ->
-            new javafx.beans.property.SimpleStringProperty(
-                cellData.getValue().getVoo().getDataPartida().toString()));
-        colPreco.setCellValueFactory(cellData ->
-            new javafx.beans.property.SimpleStringProperty(
-                String.format("R$ %.2f", cellData.getValue().getVoo().calcularPrecoFinal())));
-
-
-        List<Passagem> lista = fachada.listarPassagens();
-        todasPassagens.setAll(lista);
-
-        tbPassagens.setItems(todasPassagens);
+    public void initialize() {
+        System.out.println("Inicializando tela de administração...");
+        carregarTodasPassagens();
     }
 
+    /**
+     * Carrega e exibe todas as passagens do sistema
+     */
+    private void carregarTodasPassagens() {
+        try {
+            List<Passagem> passagens = fachada.listarPassagens();
+            
+            if (passagens.isEmpty()) {
+                listaPassagens.setPlaceholder(new Label("Nenhuma passagem cadastrada"));
+                return;
+            }
+
+            ObservableList<String> dadosFormatados = FXCollections.observableArrayList();
+            passagens.forEach(passagem -> {
+                dadosFormatados.add(formatarDadosPassagem(passagem));
+            });
+            
+            listaPassagens.setItems(dadosFormatados);
+            System.out.println(passagens.size() + " passagens carregadas com sucesso");
+            
+        } catch (Exception e) {
+            System.err.println("Erro ao carregar passagens: " + e.getMessage());
+            listaPassagens.setPlaceholder(new Label("Erro ao carregar dados"));
+            exibirMensagemErro("Erro", "Não foi possível carregar as passagens");
+        }
+    }
+
+    /**
+     * Formata os dados da passagem para exibição
+     */
+    private String formatarDadosPassagem(Passagem passagem) {
+        Passageiro passageiro = passagem.getPassageiro();
+        Voo voo = passagem.getVoo();
+        
+        return String.format(
+            "ID Passagem: %d\n" +
+            "Passageiro: %s (CPF: %s)\n" +
+            "Voo: %s → %s | Data: %s\n" +
+            "Capacidade: %d | Preço: R$ %.2f\n" +
+            "----------------------------------------",
+            passagem.getId(),
+            passageiro.getNome(),
+            passageiro.getCpf(),
+            voo.getOrigem(),
+            voo.getDestino(),
+            voo.getDataPartida().format(DATE_FORMATTER),
+            voo.getCapacidade(),
+            voo.calcularPrecoFinal()
+        );
+    }
+
+    /**
+     * Aplica filtro nas passagens conforme texto digitado
+     */
     @FXML
     private void aplicarFiltro() {
         String termo = txtPesquisa.getText().trim().toLowerCase();
-
+        
         if (termo.isEmpty()) {
-            tbPassagens.setItems(todasPassagens);
+            carregarTodasPassagens();
             return;
         }
 
-        List<Passagem> filtradas = todasPassagens.stream()
-            .filter(p ->
-                p.getPassageiro().getNome().toLowerCase().contains(termo) ||
-                p.getPassageiro().getCpf().toLowerCase().contains(termo) ||
-                p.getVoo().getOrigem().toLowerCase().contains(termo) ||
-                p.getVoo().getDestino().toLowerCase().contains(termo) ||
-                p.getVoo().getDataPartida().toString().contains(termo) ||
-                String.format("%.2f", p.getVoo().calcularPrecoFinal()).contains(termo)
-            )
-            .collect(Collectors.toList());
-
-        tbPassagens.setItems(FXCollections.observableArrayList(filtradas));
+        try {
+            List<Passagem> todasPassagens = fachada.listarPassagens();
+            ObservableList<String> passagensFiltradas = FXCollections.observableArrayList();
+            
+            for (Passagem p : todasPassagens) {
+                String textoBusca = String.format("%d %s %s %s %s %d %.2f",
+                    p.getId(),
+                    p.getPassageiro().getNome(),
+                    p.getPassageiro().getCpf(),
+                    p.getVoo().getOrigem(),
+                    p.getVoo().getDestino(),
+                    p.getVoo().getCapacidade(),
+                    p.getVoo().calcularPrecoFinal()
+                ).toLowerCase();
+                
+                if (textoBusca.contains(termo)) {
+                    passagensFiltradas.add(formatarDadosPassagem(p));
+                }
+            }
+            
+            listaPassagens.setItems(passagensFiltradas);
+            
+            if (passagensFiltradas.isEmpty()) {
+                listaPassagens.setPlaceholder(new Label("Nenhuma passagem encontrada"));
+            }
+        } catch (Exception e) {
+            exibirMensagemErro("Erro", "Falha ao aplicar filtro");
+        }
     }
 
-    @FXML
-    private void sair() {
-        System.exit(0);
-    }
+    // Métodos de navegação
+    @FXML private void sair() { System.exit(0); }
 
-    @FXML
+    @FXML 
     private void voltar() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/passagensaereas/TelaInicial.fxml"));
-            Parent root = loader.load();
-
-            Stage stage = (Stage) tbPassagens.getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.setTitle("Tela Inicial");
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-            exibirErro("Erro ao voltar para a tela inicial.");
-        }
+        carregarTela("/com/example/passagensaereas/TelaInicial.fxml", "Tela Inicial");
     }
 
-    @FXML
+    @FXML 
     private void abrirTelaCadastrarVoo() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/passagensaereas/TelaCadastrarVoo.fxml"));
-            Parent root = loader.load();
+        carregarTela("/com/example/passagensaereas/TelaCadastrarVoo.fxml", "Cadastrar Voo");
+    }
 
-            Stage stage = (Stage) tbPassagens.getScene().getWindow();
+    /**
+     * Carrega uma nova tela
+     */
+    private void carregarTela(String fxml, String titulo) {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource(fxml));
+            Stage stage = (Stage) listaPassagens.getScene().getWindow();
             stage.setScene(new Scene(root));
-            stage.setTitle("Cadastro de Voo");
+            stage.setTitle(titulo);
             stage.show();
         } catch (IOException e) {
-            e.printStackTrace();
-            exibirErro("Erro ao abrir a tela de cadastro de voo.");
+            exibirMensagemErro("Erro", "Não foi possível carregar a tela");
         }
     }
 
-    private void exibirErro(String mensagem) {
-        Alert alerta = new Alert(Alert.AlertType.ERROR);
-        alerta.setTitle("Erro");
-        alerta.setHeaderText(null);
-        alerta.setContentText(mensagem);
-        alerta.showAndWait();
+    /**
+     * Exibe mensagem de erro
+     */
+    private void exibirMensagemErro(String titulo, String mensagem) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(titulo);
+        alert.setHeaderText(null);
+        alert.setContentText(mensagem);
+        alert.showAndWait();
     }
 }

@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
@@ -44,18 +43,9 @@
       <Button fx:id="btnVoltar" layoutX="921.0" layoutY="531.0" mnemonicParsing="false" onAction="#voltar" prefHeight="49.0" prefWidth="142.0" style="-fx-background-color: #2196F3;" text="Voltar" />
       <Text layoutX="584.0" layoutY="209.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Histórico de Passagens:" />
       <Button fx:id="btnCadastrarVoo" layoutX="608.0" layoutY="537.0" mnemonicParsing="false" onAction="#abrirTelaCadastrarVoo" prefHeight="49.0" prefWidth="142.0" style="-fx-background-color: #2196F3;" text="Cadastrar um Voo" />
-      <TableView fx:id="tbPassagens" layoutX="584.0" layoutY="234.0" prefHeight="185.0" prefWidth="450.0">
-        <columns>
-          <TableColumn fx:id="colPassageiro" prefWidth="75.0" style="-fx-background-color: #2196F3;" text="Passageiro" />
-            <TableColumn fx:id="colCPF" prefWidth="75.0" style="-fx-background-color: #2196F3;" text="CPF" />
-            <TableColumn fx:id="colOrigem" prefWidth="75.0" style="-fx-background-color: #2196F3;" text="Origem" />
-            <TableColumn fx:id="colDestino" prefWidth="75.0" style="-fx-background-color: #2196F3;" text="Destino" />
-            <TableColumn fx:id="colData" prefWidth="75.0" style="-fx-background-color: #2196F3;" text="Data" />
-            <TableColumn fx:id="colPreco" prefWidth="75.0" style="-fx-background-color: #2196F3;" text="Preço" />
-        </columns>
-      </TableView>
       <TextField fx:id="txtPesquisa" layoutX="581.0" layoutY="97.0" prefHeight="25.0" prefWidth="450.0" style="-fx-background-color: transparent; -fx-border-color: #2196F3; -fx-border-width: 0 0 2 0;" />
       <Text layoutX="584.0" layoutY="77.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Pesquise:" />
       <Button fx:id="btnAplicarFiltro" layoutX="756.0" layoutY="466.0" mnemonicParsing="false" onAction="#aplicarFiltro" prefHeight="49.0" prefWidth="142.0" style="-fx-background-color: #2196F3;" text="Aplicar Filtro" />
+      <ListView fx:id="listaPassagens" layoutX="579.0" layoutY="226.0" prefHeight="161.0" prefWidth="523.0" />
    </children>
 </AnchorPane>
